@@ -1,14 +1,32 @@
-# Welcome to your project
+# Welcome to our project
 
 ## Project info
 
-**URL**: https://lovable.dev/projects/e43dfa91-07ea-426a-9ad7-0d1a9f7424de
+**URL**:https://eco-vision-reimagined.lovable.app
+**About the project**
+
+EcoVision Reimagined is a sleek, sustainability-focused web application for sharing environmental data and impactful projects. 
+It features interactive graphs (from uploads), a dynamic project portfolio, testimonial sliders, and a modern UI with smooth, accessible animations.
+
+*Key Feaures:*
+    Interactive data visualizations using uploaded graph images
+
+    Modern, responsive homepage with smooth effects and clean navigation
+
+    Portfolio/projects page with card-based grid, details, and media
+
+    Animated testimonials slider with profile info
+
+    Subtle ripple, parallax, and scroll-triggered effects
+
+    Fully accessible, mobile-first design.
+
 
 ## How can I edit this code?
 
 There are several ways of editing your application.
 
-**Use Lovable**
+**Use Lovable or hard code using vs code**
 
 Simply visit the [Lovable Project](https://lovable.dev/projects/e43dfa91-07ea-426a-9ad7-0d1a9f7424de) and start prompting.
 
@@ -24,10 +42,10 @@ Follow these steps:
 
 ```sh
 # Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+git clone <https://github.com/aashritha236/eco-vision-reimagined.git>
 
 # Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+cd <EcoVision-Way to Sustainable Future>
 
 # Step 3: Install the necessary dependencies.
 npm i
