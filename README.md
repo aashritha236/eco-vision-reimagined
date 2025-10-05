@@ -3,14 +3,16 @@
 ## Project info
 
 **URL**:https://eco-vision-reimagined.lovable.app
+
 **About the project**
 
 EcoVision Reimagined is a sleek, sustainability-focused web application for sharing environmental data and impactful projects. 
-It features interactive graphs (from uploads), a dynamic project portfolio, testimonial sliders, and a modern UI with smooth, accessible animations.
+It features interactive graphs,a dynamic project portfolio, testimonial sliders, and a modern UI with smooth, accessible animations.
 
 *Key Feaures:*
-    Interactive data visualizations using uploaded graph images
 
+    Interactive data visualizations using uploaded graph images
+    
     Modern, responsive homepage with smooth effects and clean navigation
 
     Portfolio/projects page with card-based grid, details, and media
