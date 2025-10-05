@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ChevronLeft, ChevronRight, Star } from "lucide-react";
 import { Card, CardContent } from "./ui/card";
 import { Button } from "./ui/button";
 
 const Testimonials = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const sectionRef = useRef<HTMLDivElement>(null);
 
   const testimonials = [
     {
@@ -33,6 +35,35 @@ const Testimonials = () => {
     },
   ];
 
+  // Auto-play functionality
+  useEffect(() => {
+    if (!isPaused) {
+      const interval = setInterval(() => {
+        setCurrentIndex((prev) => (prev + 1) % testimonials.length);
+      }, 5000);
+      return () => clearInterval(interval);
+    }
+  }, [isPaused, testimonials.length]);
+
+  // Scroll reveal animation
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("revealed");
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    const elements = sectionRef.current?.querySelectorAll(".scroll-reveal");
+    elements?.forEach((el) => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, []);
+
   const nextTestimonial = () => {
     setCurrentIndex((prev) => (prev + 1) % testimonials.length);
   };
@@ -44,9 +75,9 @@ const Testimonials = () => {
   };
 
   return (
-    <section id="testimonials" className="py-24 bg-secondary">
+    <section id="testimonials" className="py-24 bg-secondary" ref={sectionRef}>
       <div className="container mx-auto px-4">
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <div className="text-center max-w-3xl mx-auto mb-16 scroll-reveal">
           <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">
             What Our <span className="text-primary">Clients</span> Say
           </h2>
@@ -55,16 +86,25 @@ const Testimonials = () => {
           </p>
         </div>
 
-        <div className="max-w-4xl mx-auto relative">
-          <Card className="border-border shadow-elegant">
+        <div 
+          className="max-w-4xl mx-auto relative scroll-reveal"
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+        >
+          <Card className="border-border shadow-elegant overflow-hidden">
             <CardContent className="p-8 md:p-12">
-              <div className="flex flex-col md:flex-row items-center gap-8">
-                <img
-                  src={testimonials[currentIndex].image}
-                  alt={testimonials[currentIndex].name}
-                  className="w-24 h-24 rounded-full object-cover shadow-lg"
-                  loading="lazy"
-                />
+              <div className="flex flex-col md:flex-row items-center gap-8 animate-fade-in">
+                <div className="relative">
+                  <img
+                    src={testimonials[currentIndex].image}
+                    alt={testimonials[currentIndex].name}
+                    className="w-24 h-24 rounded-full object-cover shadow-lg ring-4 ring-primary/10"
+                    loading="lazy"
+                  />
+                  <div className="absolute -bottom-2 -right-2 bg-primary text-primary-foreground rounded-full p-2">
+                    <Star className="w-4 h-4 fill-current" />
+                  </div>
+                </div>
                 <div className="flex-1 text-center md:text-left">
                   <div className="flex justify-center md:justify-start mb-4">
                     {[...Array(testimonials[currentIndex].rating)].map((_, i) => (
@@ -96,7 +136,8 @@ const Testimonials = () => {
               variant="outline"
               size="icon"
               onClick={prevTestimonial}
-              className="rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+              className="rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all hover:scale-110"
+              aria-label="Previous testimonial"
             >
               <ChevronLeft className="w-5 h-5" />
             </Button>
@@ -117,7 +158,8 @@ const Testimonials = () => {
               variant="outline"
               size="icon"
               onClick={nextTestimonial}
-              className="rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+              className="rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all hover:scale-110"
+              aria-label="Next testimonial"
             >
               <ChevronRight className="w-5 h-5" />
             </Button>

@@ -1,9 +1,11 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ExternalLink } from "lucide-react";
 import { Card, CardContent } from "./ui/card";
+import { Button } from "./ui/button";
 
 const Portfolio = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const [selectedCategory, setSelectedCategory] = useState("All");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -80,10 +82,15 @@ const Portfolio = () => {
     },
   ];
 
+  const categories = ["All", ...Array.from(new Set(projects.map(p => p.category)))];
+  const filteredProjects = selectedCategory === "All" 
+    ? projects 
+    : projects.filter(p => p.category === selectedCategory);
+
   return (
     <section id="projects" className="py-24 bg-background overflow-hidden" ref={sectionRef}>
       <div className="container mx-auto px-4">
-        <div className="text-center max-w-3xl mx-auto mb-16 scroll-reveal">
+        <div className="text-center max-w-3xl mx-auto mb-12 scroll-reveal">
           <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">
             Our <span className="text-primary">Project</span> Portfolio
           </h2>
@@ -93,10 +100,25 @@ const Portfolio = () => {
           </p>
         </div>
 
+        {/* Category Filter */}
+        <div className="flex flex-wrap justify-center gap-3 mb-12 scroll-reveal">
+          {categories.map((category) => (
+            <Button
+              key={category}
+              variant={selectedCategory === category ? "default" : "outline"}
+              onClick={() => setSelectedCategory(category)}
+              className="relative overflow-hidden group"
+            >
+              <span className="relative z-10">{category}</span>
+              <span className="absolute inset-0 bg-primary/20 scale-0 group-hover:scale-100 transition-transform duration-300 rounded-md" />
+            </Button>
+          ))}
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.map((project, index) => (
+          {filteredProjects.map((project, index) => (
             <Card
-              key={index}
+              key={`${project.title}-${index}`}
               className="scroll-reveal parallax-card group overflow-hidden border-border hover:shadow-elegant transition-all duration-300"
               style={{ transitionDelay: `${index * 100}ms` }}
             >
@@ -108,9 +130,11 @@ const Portfolio = () => {
                   loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center p-6">
-                  <button className="bg-white text-primary px-6 py-2 rounded-full font-semibold flex items-center gap-2 hover:bg-primary hover:text-white transition-colors">
-                    View Project
-                    <ExternalLink className="w-4 h-4" />
+                  <button className="relative overflow-hidden bg-white text-primary px-6 py-2 rounded-full font-semibold flex items-center gap-2 hover:bg-primary hover:text-white transition-colors before:absolute before:inset-0 before:bg-primary/10 before:scale-0 hover:before:scale-100 before:transition-transform before:duration-500 before:rounded-full">
+                    <span className="relative z-10 flex items-center gap-2">
+                      View Project
+                      <ExternalLink className="w-4 h-4" />
+                    </span>
                   </button>
                 </div>
               </div>
